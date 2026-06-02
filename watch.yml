@@ -1,0 +1,46 @@
+name: Catawiki Watch Agent
+
+on:
+  schedule:
+    # Ogni 15 minuti, dalle 7:00 alle 23:00 ora italiana (UTC+2 in estate)
+    - cron: "0,15,30,45 5-21 * * *"
+  workflow_dispatch:  # permette di avviarlo manualmente da GitHub
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Installa dipendenze
+        run: pip install requests beautifulsoup4
+
+      - name: Ripristina seen_auctions dal cache
+        uses: actions/cache@v4
+        with:
+          path: seen_auctions.json
+          key: seen-auctions-${{ github.run_id }}
+          restore-keys: |
+            seen-auctions-
+
+      - name: Esegui agente
+        env:
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        run: python agent.py
+
+      - name: Salva seen_auctions nel cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: seen_auctions.json
+          key: seen-auctions-${{ github.run_id }}

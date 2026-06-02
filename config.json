@@ -1,0 +1,42 @@
+{
+  "telegram": {
+    "bot_token": "INSERISCI_IL_TUO_BOT_TOKEN",
+    "chat_id": "INSERISCI_IL_TUO_CHAT_ID"
+  },
+  "check_interval_minutes": 15,
+  "rules": [
+    {
+      "name": "Rolex Submariner affordable",
+      "enabled": true,
+      "keywords": {
+        "mode": "AND",
+        "include": ["Rolex", "Submariner"],
+        "exclude": ["replica", "rotto", "per pezzi", "danneggiato", "non funzionante"]
+      },
+      "max_price_eur": 8000,
+      "expiry_within_hours": 3
+    },
+    {
+      "name": "Rolex Datejust vintage",
+      "enabled": true,
+      "keywords": {
+        "mode": "AND",
+        "include": ["Rolex", "Datejust"],
+        "exclude": ["replica", "rotto", "per pezzi", "cassa solo", "quadrante solo"]
+      },
+      "max_price_eur": 5000,
+      "expiry_within_hours": 4
+    },
+    {
+      "name": "Qualsiasi Rolex sotto soglia",
+      "enabled": false,
+      "keywords": {
+        "mode": "OR",
+        "include": ["Rolex"],
+        "exclude": ["replica", "rotto", "per pezzi"]
+      },
+      "max_price_eur": 3000,
+      "expiry_within_hours": 2
+    }
+  ]
+}
