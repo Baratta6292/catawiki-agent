@@ -38,10 +38,18 @@ HEADERS = {
 # Config & stato
 # ---------------------------------------------------------------------------
 
+import os
+
 def load_config() -> dict:
     with open(CONFIG_PATH, encoding="utf-8") as f:
-        return json.load(f)
-
+        config = json.load(f)
+    token = os.getenv("TG_BOT_TOKEN")
+    chat_id = os.getenv("TG_CHAT_ID")
+    if token:
+        config["telegram"]["bot_token"] = token
+    if chat_id:
+        config["telegram"]["chat_id"] = chat_id
+    return config
 
 def load_seen() -> set:
     if SEEN_PATH.exists():
