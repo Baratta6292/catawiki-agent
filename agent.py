@@ -40,6 +40,8 @@ HEADERS = {
 
 import os
 
+import os
+
 def load_config() -> dict:
     with open(CONFIG_PATH, encoding="utf-8") as f:
         config = json.load(f)
